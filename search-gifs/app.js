@@ -18,7 +18,7 @@ window.onload = function () {
 
     // querying giphy.com
 
-    let searchGiphy = (term) => {
+    const searchGiphy = (term) => {
         const giphyUrl = `http://api.giphy.com/v1/gifs/search?q=${ term }&api_key=dc6zaTOxFJmzC`;
         return fetch(giphyUrl);
     };
@@ -28,7 +28,7 @@ window.onload = function () {
 
     gifs.subscribe(
         data => {
-            console.log(data);
+            data.json().then(a => console.log(a))
                 // .appendChild(data => data.map(value => document.createElement('li').value = data));
         }, error => {
             console.log(error);
