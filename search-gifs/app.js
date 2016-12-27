@@ -1,19 +1,37 @@
-const input = document.getElementsByClassName('search-input');
+window.onload = function () {
+    const input = document.getElementsByClassName('search-input');
+    const list = document.getElementsByClassName('gifs-list')[0];
+
+    // observable listening to the keup event
+    const keyups = Rx.Observable.fromEvent(input, 'keyup')
+        .pluck('target', 'value')
+        .filter(text => text.length > 2);
+
+    // debounce input for 500ms
+    const debounced = keyups
+        .debounce(500);
+
+    // get only distinct values to eliminate control characters
+    const distinct = debounced
+        .distinctUntilChanged();
 
 
-// observable listening to the keup event
-const keyups = Rx.Observable.fromEvent(input, 'keyup')
-    .pluck('target', 'value')
-    .filter(text => text.length > 2);
+    // querying giphy.com
 
-// debounce input for 500ms
-const debounced = keyups
-    .debounce(500);
+    let searchGiphy = (term) => {
+        const giphyUrl = `http://api.giphy.com/v1/gifs/search?q=${ term }&api_key=dc6zaTOxFJmzC`;
+        return fetch(giphyUrl);
+    };
 
-// get only distinct values to eliminate control characters
-const distinct = debounced
-    .distinctUntilChanged();
+    const gifs = distinct
+        .flatMapLatest(searchGiphy);
 
-
-// querying giphy.com
-
+    gifs.subscribe(
+        data => {
+            console.log(data);
+                // .appendChild(data => data.map(value => document.createElement('li').value = data));
+        }, error => {
+            console.log(error);
+        }
+    )
+}
