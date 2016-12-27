@@ -1,0 +1,13 @@
+.main .search-input {
+    height: 80px;
+    width: 100%;
+    font-size: 48px;
+}
+
+.main .gifs-list .gif-element {
+    list-style: none;
+}
+
+.main .gifs-list .gif-element p {
+    font-size: 24px;
+}
