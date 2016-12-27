@@ -1,1 +1,1 @@
-console.log('hello world');
+var input = document.getElementsByClassName('search-input');
